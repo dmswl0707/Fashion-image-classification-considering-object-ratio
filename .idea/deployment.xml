@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="root@117.16.137.118:10001 password" remoteFilesAllowedToDisappearOnAutoupload="false" showEqualInSync="true" showNewOnSourceInSync="false" showNewOnTargetInSync="false">
+    <serverData>
+      <paths name="eunji@117.16.137.110:22 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/eunji/project_dir/ResNet_Pytorch-main" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="eunji@117.16.137.110:22 password (1)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/eunji/project_dir/ResNet_Pytorch-main" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="root@117.16.137.118:10001 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/workspace/pytorch/project_dir/Ratio_Image_Recognition" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
