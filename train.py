@@ -1,12 +1,13 @@
 import numpy as np
 import torch.optim as optim
-import torch.optim.lr_scheduler
+#import torch.optim.lr_scheduler
 import torchvision.models as models
 from functions.early_stopping import *
 from functions.squarepad import *
 #from DataLoader import trainset,valset
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
+from custom_CosineAnnealingWarmupRestart import *
 from Args import *
 import wandb
 
@@ -14,7 +15,7 @@ import wandb
 transforms_train = transforms.Compose([
                                  SquarePad(), #square pad 적용
                                  transforms.Resize((224, 224)),
-                                 transforms.RandomRotation(degrees=30),
+                                 transforms.RandomRotation(degrees=20),
                                  transforms.RandomHorizontalFlip(),
                                  transforms.ToTensor(),
                                  transforms.Normalize(Args["mean"], Args["std"])
@@ -33,19 +34,20 @@ transforms_val = transforms.Compose([
 trainset = ImageFolder(root='/workspace/pytorch/dataset/train', transform= transforms_train)
 valset = ImageFolder(root='/workspace/pytorch/dataset/val', transform = transforms_val)
 
-batch_size = Args["batch_size"]
 
-train_loader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle = True, num_workers = 8)
-val_loader = torch.utils.data.DataLoader(valset, batch_size=batch_size, shuffle=False, num_workers = 8)
+train_loader = torch.utils.data.DataLoader(trainset, batch_size=Args["batch_size"], shuffle = True, num_workers = 8)
+val_loader = torch.utils.data.DataLoader(valset, batch_size=Args["batch_size"], shuffle=False, num_workers = 8)
 
 # 스크래치 학습 ㄴㄴ 미세조정 학습
-model = models.resnet50(pretrained = True)
+model = models.resnet152(pretrained = True)
 
 if torch.cuda.device_count()>1:
     net = nn.DataParallel(model)
     print("Let's use", torch.cuda.device_count(), "GPUs!")
 
-wandb.init(name = 'RatioResNet50_test')
+
+wandb.init(name = Args["name"])
+
 
 # train setting
 criterion = nn.CrossEntropyLoss()
@@ -56,11 +58,12 @@ print(device)
 
 # 하이퍼 파라미터 변경
 optimizer = optim.Adam(model.parameters(), lr=Args["lr"], betas=(0.9, 0.999), eps=1e-08)
-scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30,80], gamma=0.5)
+scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=15, T_mult=1, eta_max=0.00001, T_up=5, gamma=0.5)
 Epoch = Args["Epoch"]
 patience = Args["patience"]
 
 wandb.watch(network)
+
 
 def training():
 

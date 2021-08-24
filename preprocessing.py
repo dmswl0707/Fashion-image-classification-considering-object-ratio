@@ -5,14 +5,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 from torchvision.datasets import ImageFolder
 
-# preprocessiong
+# preprocessing (이미지 로드 확인용)
 # 데이터 증강과 데이터 로드
 
 
 transforms_train = transforms.Compose([
                                  SquarePad(), #square pad 적용
                                  transforms.Resize((224, 224)),
-
+                                 transforms.RandomRotation(degrees=30),
+                                 transforms.RandomHorizontalFlip(),\
                                  transforms.ToTensor(),
                                  transforms.Normalize(Args["mean"], Args["std"])
                                 ])
@@ -20,7 +21,7 @@ transforms_train = transforms.Compose([
 transforms_val = transforms.Compose([
                                  SquarePad(), #square pad 적용
                                  transforms.Resize((224, 224)),
-                                 transforms.RandomRotation(degrees=30),
+                                 transforms.RandomRotation(degrees=20),
                                  transforms.RandomHorizontalFlip(),
                                  transforms.ToTensor(),
                                  transforms.Normalize(Args["mean"], Args["std"])
@@ -33,8 +34,8 @@ valset = ImageFolder(root='/workspace/pytorch/dataset/val', transform = transfor
 
 num_train = len(trainset)
 num_val = len(valset)
-#print({'train' : num_train})
-#print({'val' : num_val})
+print({'train' : num_train})
+print({'val' : num_val})
 
 
 categories = list(trainset.class_to_idx.keys())
@@ -42,7 +43,9 @@ categories = list(trainset.class_to_idx.keys())
 num_class = len(categories)
 #print(num_class)
 
-'''
+train_loader = torch.utils.data.DataLoader(trainset, batch_size=Args["batch_size"], shuffle = True, num_workers = 8)
+val_loader = torch.utils.data.DataLoader(valset, batch_size=Args["batch_size"], shuffle=False, num_workers = 8)
+
 ### 이미지 확인
 def im_convert(tensor):
   image = tensor.clone().detach().numpy()
@@ -62,5 +65,4 @@ for i in np.arange(20):
   ax = fig.add_subplot(2, 10, i+1, xticks=[], yticks=[])
   plt.imshow(im_convert(images[i]))
   ax.set_title(categories[labels[i].item()])
-  #plt.show()
-'''
+  plt.show()
