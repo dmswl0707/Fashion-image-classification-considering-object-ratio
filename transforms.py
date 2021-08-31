@@ -59,10 +59,11 @@ dataiter = iter(train_loader)
 images, labels = dataiter.next()
 
 fig = plt.figure(figsize=(25, 4))
-
+'''
 for i in np.arange(20):
   # row 2 column 10
   ax = fig.add_subplot(2, 10, i+1, xticks=[], yticks=[])
   plt.imshow(im_convert(images[i]))
   ax.set_title(categories[labels[i].item()])
   plt.show()
+'''

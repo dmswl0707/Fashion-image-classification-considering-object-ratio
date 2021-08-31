@@ -11,6 +11,9 @@ class SquarePad:
       padding = (hp, vp, hp, vp)
       return TF.pad(image, padding, 0, 'constant')
 
+# 랜덤으로 적용
+# 데이터를 더해줌(데이터 증강)
+
 
 '''
 # usage

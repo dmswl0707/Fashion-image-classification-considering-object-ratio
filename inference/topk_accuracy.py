@@ -1,4 +1,4 @@
-from preprocessing import *
+from transforms import *
 #from main import *
 #from scratch_training import MModel, device, criterion
 from training import model, criterion,device

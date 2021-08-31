@@ -11,7 +11,7 @@ Args = {"name" : 'optimizer_Adam_ResNet152_customed_CAWR',
 
         #"eta_min" : 0.00001,
         #"weight_decay" : 0.001,
-        "batch_size": 80,
+        "batch_size": 80, #80
         "Epoch" : 100,
         #"num_fold" : 5,
         "patience" : 20,

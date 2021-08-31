@@ -1,5 +1,5 @@
 import torch
-from preprocessing import testloader, categories
+from transforms import testloader, categories
 #from model import *
 from training import device, criterion, model
 #from scratch_training import model, device, criterion

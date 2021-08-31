@@ -1,12 +1,13 @@
-from preprocessing import testloader, categories
+from transforms import valloader, categories
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 #from model import *
-from training import *
+from train import *
 
 
-PATH = '../weights/checkpoint_adam_4trial.pt'
+PATH = '/workspace/pytorch/project_dir/Ratio_Image_Recognition/checkpoint.pt'
 
 model = model.to(device)
 model.cuda()
@@ -19,7 +20,7 @@ model.load_state_dict(torch.load(PATH))
 model.eval()
 
 with torch.no_grad():
-    for i, (inputs, classes) in enumerate(testloader):
+    for i, (inputs, classes) in enumerate(valloader):
         inputs = inputs.to(device)
         classes = classes.to(device)
         outputs = model(inputs)

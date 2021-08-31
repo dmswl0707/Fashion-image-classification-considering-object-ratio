@@ -1,6 +1,6 @@
 
 
-from preprocessing import *
+from transforms import *
 from training import model, criterion, optimizer
 
 

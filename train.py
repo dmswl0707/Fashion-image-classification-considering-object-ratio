@@ -3,42 +3,17 @@ import torch.optim as optim
 #import torch.optim.lr_scheduler
 import torchvision.models as models
 from functions.early_stopping import *
-from functions.squarepad import *
-#from DataLoader import trainset,valset
-from torchvision import transforms
-from torchvision.datasets import ImageFolder
+from transforms import *
+#from My_AlbumenTations import *
 from custom_CosineAnnealingWarmupRestart import *
 from Args import *
 import wandb
 
 
-transforms_train = transforms.Compose([
-                                 SquarePad(), #square pad 적용
-                                 transforms.Resize((224, 224)),
-                                 transforms.RandomRotation(degrees=20),
-                                 transforms.RandomHorizontalFlip(),
-                                 transforms.ToTensor(),
-                                 transforms.Normalize(Args["mean"], Args["std"])
-                                ])
-
-transforms_val = transforms.Compose([
-                                 SquarePad(),
-                                 transforms.Resize((224, 224)),
-                                 transforms.RandomRotation(degrees=30),
-                                 transforms.RandomHorizontalFlip(),
-                                 transforms.ToTensor(),
-                                 transforms.Normalize(Args["mean"], Args["std"])
-                                 ])
-
-
-trainset = ImageFolder(root='/workspace/pytorch/dataset/train', transform= transforms_train)
-valset = ImageFolder(root='/workspace/pytorch/dataset/val', transform = transforms_val)
-
-
 train_loader = torch.utils.data.DataLoader(trainset, batch_size=Args["batch_size"], shuffle = True, num_workers = 8)
 val_loader = torch.utils.data.DataLoader(valset, batch_size=Args["batch_size"], shuffle=False, num_workers = 8)
 
-# 스크래치 학습 ㄴㄴ 미세조정 학습
+# 스크래치 학습 ㄴㄴ 미세조정 학습ㄷ
 model = models.resnet152(pretrained = True)
 
 if torch.cuda.device_count()>1:
@@ -47,7 +22,6 @@ if torch.cuda.device_count()>1:
 
 
 wandb.init(name = Args["name"])
-
 
 # train setting
 criterion = nn.CrossEntropyLoss()
@@ -58,7 +32,7 @@ print(device)
 
 # 하이퍼 파라미터 변경
 optimizer = optim.Adam(model.parameters(), lr=Args["lr"], betas=(0.9, 0.999), eps=1e-08)
-scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=15, T_mult=1, eta_max=0.00001, T_up=5, gamma=0.5)
+scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=20, T_mult=1, eta_max=6e-6, T_up=15, gamma=0.5)
 Epoch = Args["Epoch"]
 patience = Args["patience"]
 
@@ -67,7 +41,6 @@ wandb.watch(network)
 
 def training():
 
-    #writer = SummaryWriter('run/cifar_resnet_exp')
     early_stopping = EarlyStopping(patience=patience, verbose=True)
 
     for epoch in range(Epoch):
@@ -96,6 +69,7 @@ def training():
             loss = criterion(y_pred, y)
 
             loss.backward()
+            # step 마다 돌아가는 부분
             optimizer.step()
 
             # acc를 구하는 부분
@@ -106,14 +80,17 @@ def training():
             #train_loss.append(loss.item())
             train_correct += (preds == y).sum().item()
 
-            epoch_loss = train_loss / len(train_loader)
-            epoch_acc = 100. * float(train_correct) / total
+            np_train_loss = np.average(train_loss)
+            np_train_acc = np.average(100. * float(train_correct) / total)
 
+        epoch_loss = np_train_loss / len(train_loader)
+        epoch_acc = np_train_acc
 
         print("train loss: {:.4f}, acc: {:4f}".format(epoch_loss, epoch_acc))
 
         wandb.log({
             "Train Loss": epoch_loss,
+            "custom_epoch" : epoch,
             "Train Accuracy": epoch_acc,
             "Train error": 100 - epoch_acc,
             "lr" : optimizer.param_groups[0]['lr'] # 학습률 로깅
@@ -137,16 +114,13 @@ def training():
                 #val_loss.append(v_loss.item())
                 val_correct += (v_preds == val_labels).sum().item()
 
-                val_epoch_loss = val_loss / len(val_loader)
-                val_epoch_acc = 100. * float(val_correct) / v_total
+                np_val_loss = np.average(val_loss)
 
-            np_train_loss = np.average(train_loss)
-            np_val_loss = np.average(val_loss)
-            avg_train_loss.append(np_train_loss)
-            avg_val_loss.append(np_val_loss)
-
+            val_epoch_loss = np_val_loss / len(val_loader)
+            val_epoch_acc = 100. * float(val_correct) / v_total
 
             print("val loss: {:.4f}, acc: {:4f}".format(val_epoch_loss, val_epoch_acc))
+
             scheduler.step()
 
             wandb.log({
