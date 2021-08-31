@@ -12,7 +12,7 @@ from torchvision.datasets import ImageFolder
 transforms_train = transforms.Compose([
                                  SquarePad(), #square pad 적용
                                  transforms.Resize((224, 224)),
-                                 transforms.RandomRotation(degrees=30),
+                                 #transforms.RandomRotation(degrees=30),
                                  transforms.RandomHorizontalFlip(),\
                                  transforms.ToTensor(),
                                  transforms.Normalize(Args["mean"], Args["std"])
@@ -21,7 +21,7 @@ transforms_train = transforms.Compose([
 transforms_val = transforms.Compose([
                                  SquarePad(), #square pad 적용
                                  transforms.Resize((224, 224)),
-                                 transforms.RandomRotation(degrees=20),
+                                 #transforms.RandomRotation(degrees=20),
                                  transforms.RandomHorizontalFlip(),
                                  transforms.ToTensor(),
                                  transforms.Normalize(Args["mean"], Args["std"])
@@ -59,11 +59,11 @@ dataiter = iter(train_loader)
 images, labels = dataiter.next()
 
 fig = plt.figure(figsize=(25, 4))
-'''
+
 for i in np.arange(20):
   # row 2 column 10
   ax = fig.add_subplot(2, 10, i+1, xticks=[], yticks=[])
   plt.imshow(im_convert(images[i]))
   ax.set_title(categories[labels[i].item()])
   plt.show()
-'''
+

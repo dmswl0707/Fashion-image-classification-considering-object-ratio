@@ -1,0 +1,7 @@
+
+# 구현해야할 것
+1. 일반 resize 이미지와 square pad 적용된 이미지   - 1
+2. 한 이미지씩 넣을 수 있는 CAM -4
+3. confusion matrix -2
+(imageNet으로 사전학습된 CIFAR100 class 결과)
+4. 알고리즘 이미지 -3
