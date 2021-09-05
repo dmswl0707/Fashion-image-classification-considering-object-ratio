@@ -4,5 +4,7 @@
 *.json
 todo.txt
 
-result/
+augumentation/
+SquarePad/
 weights/*.pt
+

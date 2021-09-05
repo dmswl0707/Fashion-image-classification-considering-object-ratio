@@ -2,7 +2,7 @@ import torch.optim as optim
 #import torch.optim.lr_scheduler
 import torchvision.models as models
 from functions.early_stopping import *
-from transforms import *
+from transforms2 import *
 #from My_AlbumenTations import *
 from functions.custom_CosineAnnealingWarmupRestart import *
 from Args import *
@@ -20,12 +20,11 @@ if torch.cuda.device_count()>1:
     print("Let's use", torch.cuda.device_count(), "GPUs!")
 '''
 
-wandb.init(name = 'SquarePad')
+wandb.init(name = 'UnSquarePad')
 
 # train setting
 criterion = nn.CrossEntropyLoss()
-device = torch.device('cuda:0')
-
+device = torch.device('cuda:1')
 
 network = model.to(device)
 print(device)

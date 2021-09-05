@@ -10,7 +10,7 @@ from torchvision.datasets import ImageFolder
 
 
 transforms_train = transforms.Compose([
-                                 SquarePad(), #square pad 적용
+                                 #SquarePad(), #square pad 적용
                                  transforms.Resize((224, 224)),
                                  transforms.RandomHorizontalFlip(),
                                  transforms.RandomPerspective(distortion_scale=0.6, p=0.5),
@@ -20,7 +20,7 @@ transforms_train = transforms.Compose([
                                 ])
 
 transforms_val = transforms.Compose([
-                                 SquarePad(), #square pad 적용
+                                 #SquarePad(), #square pad 적용
                                  transforms.Resize((224, 224)),
                                  #UnSquarePad.RandomRotation(degrees=20),
                                  #UnSquarePad.RandomHorizontalFlip(),

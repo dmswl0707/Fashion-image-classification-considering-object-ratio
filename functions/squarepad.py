@@ -1,5 +1,6 @@
 import torchvision.transforms.functional as TF
 import numpy as np
+import torch.nn.functional as F
 
 
 class SquarePad:
@@ -18,11 +19,11 @@ class SquarePad:
 '''
 # usage
 
-transforms.Compose(
+UnSquarePad.Compose(
         [
             SquarePad(),
-            transforms.Resize([224, 224]),
-            transforms.ToTensor(),
+            UnSquarePad.Resize([224, 224]),
+            UnSquarePad.ToTensor(),
         ]
 )
 '''
