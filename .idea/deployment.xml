@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="root@117.16.137.118:10001 password" remoteFilesAllowedToDisappearOnAutoupload="false" showEqualInSync="true" showNewOnSourceInSync="false" showNewOnTargetInSync="false">
+  <component name="PublishConfigData" autoUpload="Always" remoteFilesAllowedToDisappearOnAutoupload="false" showEqualInSync="true" showNewOnSourceInSync="false" showNewOnTargetInSync="false">
     <serverData>
       <paths name="root@117.16.137.118:10001 password">
         <serverdata>
           <mappings>
             <mapping deploy="/workspace/pytorch/project_dir/Ratio_Image_Recognition" local="$PROJECT_DIR$" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath path="/workspace/pytorch/project_dir/Ratio_Image_Recognition/functions/squarepad_visual/label/img_1.png" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+      <paths name="root@117.16.137.118:10002 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/workspace/pytorch" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

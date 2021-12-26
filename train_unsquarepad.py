@@ -1,40 +1,44 @@
 import torch.optim as optim
 #import torch.optim.lr_scheduler
+import torch.optim.lr_scheduler
 import torchvision.models as models
-from functions.early_stopping import *
-from transforms import *
-#from My_AlbumenTations import *
+from functions.early_stopping2 import *
+
+from transforms_unsquarepad3 import *
 from functions.custom_CosineAnnealingWarmupRestart import *
-from Args import *
+from Args2 import *
 import wandb
 
-
-train_loader = torch.utils.data.DataLoader(trainset, batch_size=Args["batch_size"], shuffle = True, num_workers = 4)
-val_loader = torch.utils.data.DataLoader(valset, batch_size=Args["batch_size"], shuffle=False, num_workers = 4)
+train_loader = torch.utils.data.DataLoader(trainset, batch_size=Args["batch_size"],  sampler = train_sampler, num_workers = 8)
+val_loader = torch.utils.data.DataLoader(valset, batch_size=Args["batch_size"], sampler = val_sampler, num_workers = 8)
+#test_loader = torch.utils.data.DataLoader(testset, batch_size=squarepad_visual, shuffle=False, num_workers = 8)
+#testloader = torch.utils.data.DataLoader(testset, batch_size=1, shuffle=True, num_workers=8)
 
 # 스크래치 학습 ㄴㄴ 미세조정 학습ㄷ
-model = models.resnet152(pretrained = True)
-'''
+model = models.resnet50(pretrained = True)
+
 if torch.cuda.device_count()>1:
     net = nn.DataParallel(model)
     print("Let's use", torch.cuda.device_count(), "GPUs!")
-'''
 
-wandb.init(name = 'SquarePad')
+
+wandb.init(name = Args["name"])
 
 # train setting
 criterion = nn.CrossEntropyLoss()
-device = torch.device('cuda:0')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-network = model.to(device)
+network = net.to(device)
 print(device)
 
 # 하이퍼 파라미터 변경
 optimizer = optim.Adam(model.parameters(), lr=Args["lr"], betas=(0.9, 0.999), eps=1e-08)
-scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=20, T_mult=2, eta_max=4e-6, T_up=10, gamma=0.5)
+#scheduler = CosineAnnealingWarmUpRestarts(optimizer, T_0=15, T_mult=1, eta_max=Args["eta_min"], T_up=3, gamma=0.3)
 Epoch = Args["Epoch"]
 patience = Args["patience"]
+
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=0.5, gamma=0.3)
 
 wandb.watch(network)
 

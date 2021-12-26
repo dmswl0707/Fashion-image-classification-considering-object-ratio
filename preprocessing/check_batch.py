@@ -1,6 +1,6 @@
 
 
-from transforms import *
+from transforms_squarepad import *
 from training import model, criterion, optimizer
 
 

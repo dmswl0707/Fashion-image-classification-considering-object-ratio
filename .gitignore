@@ -5,6 +5,8 @@
 todo.txt
 
 augumentation/
+augumentation/album/
+
 SquarePad/
-weights/*.pt
+weights/
 

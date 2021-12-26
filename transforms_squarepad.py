@@ -1,19 +1,19 @@
+import torchvision
 from torchvision import transforms
+from torchvision.datasets import ImageFolder
 from functions.squarepad import *
+from preprocessing.imagennet_class_index import value
 from Args import *
 import matplotlib.pyplot as plt
 import numpy as np
-from torchvision.datasets import ImageFolder
-
-# preprocessing (이미지 로드 확인용)
-# 데이터 증강과 데이터 로드
 
 
 transforms_train = transforms.Compose([
                                  SquarePad(), #square pad 적용
                                  transforms.Resize((224, 224)),
+                                 transforms.RandomRotation(degrees=20),
                                  transforms.RandomHorizontalFlip(),
-                                 transforms.RandomPerspective(distortion_scale=0.6, p=0.5),
+                                 #transforms.RandomPerspective(distortion_scale=0.6, p=0.5),
                                  transforms.RandomPosterize(2, p=0.5),
                                  transforms.ToTensor(),
                                  transforms.Normalize(Args["mean"], Args["std"])
@@ -28,24 +28,33 @@ transforms_val = transforms.Compose([
                                  transforms.Normalize(Args["mean"], Args["std"])
                                  ])
 
-# 이미지 넷 불러오기
+transforms_test = transforms.Compose([
+                                 SquarePad(), #square pad 적용
+                                 transforms.Resize((224, 224)),
+                                 #UnSquarePad.RandomRotation(degrees=20),
+                                 #UnSquarePad.RandomHorizontalFlip(),
+                                 transforms.ToTensor(),
+                                 transforms.Normalize(Args["mean"], Args["std"])
+                                 ])
 
 trainset = ImageFolder(root='/workspace/pytorch/dataset/train', transform= transforms_train)
 valset = ImageFolder(root='/workspace/pytorch/dataset/val', transform = transforms_val)
+testset = ImageFolder(root='/workspace/pytorch/dataset/val', transform = transforms_test)
+
 
 num_train = len(trainset)
 num_val = len(valset)
+#num_test = len(testset)
+
 print({'train' : num_train})
 print({'val' : num_val})
+#print({'test' : num_test})
 
-
-categories = list(trainset.class_to_idx.keys())
+categories = value
+#categories = list(trainset.class_to_idx.keys())
 #print(categories)
 num_class = len(categories)
 #print(num_class)
-
-train_loader = torch.utils.data.DataLoader(trainset, batch_size=Args["batch_size"], shuffle = True, num_workers = 8)
-val_loader = torch.utils.data.DataLoader(valset, batch_size=Args["batch_size"], shuffle=False, num_workers = 8)
 
 ### 이미지 확인
 def im_convert(tensor):
@@ -55,7 +64,7 @@ def im_convert(tensor):
   image = image.clip(0, 1)
   return image
 
-
+'''
 dataiter = iter(train_loader)
 images, labels = dataiter.next()
 
@@ -67,4 +76,4 @@ for i in np.arange(20):
   plt.imshow(im_convert(images[i]))
   ax.set_title(categories[labels[i].item()])
   plt.show()
-
+'''

@@ -1,4 +1,4 @@
-from train2 import *
+from train_sqaurepad import *
 #from k_fold import *
 
 if __name__ == "__main__":

@@ -1,14 +1,11 @@
 import torch
-from transforms import testloader, categories
-#from model import *
-from training import device, criterion, model
-#from scratch_training import model, device, criterion
+from transforms_squarepad3 import categories
+from train_sqaurepad import val_loader,device, criterion, model
 import wandb
 import numpy as np
 
 """### Inference"""
-PATH = '../weights/checkpoint_adam_4trial.pt'
-#model=Model(num_class=10)
+PATH = '/workspace/pytorch/project_dir/Ratio_Image_Recognition/ResNet50_SquarePad_lr0.00001.pt'
 
 model = model.to(device)
 #print(device)
@@ -23,13 +20,13 @@ test_loss = 0.0
 correct = 0
 total = 0
 
-class_correct = list(0. for i in range(10))
-class_total = list(0. for i in range(10))
+class_correct = list(0. for i in range(13))
+class_total = list(0. for i in range(13))
 
 example_images = []
 with torch.no_grad():
 
-    for data, target in testloader:
+    for data, target in val_loader:
         if len(target.data) != batch_size:
             break
 
@@ -53,10 +50,10 @@ with torch.no_grad():
             class_total[label] += 1
 
     # calculate and print avg test loss
-    test_loss = test_loss / len(testloader.dataset)
+    test_loss = test_loss / len(val_loader.dataset)
     print('Test Loss: {:.6f}\n'.format(test_loss))
 
-    for i in range(10):
+    for i in range(13):
         if class_total[i] > 0:
             print('Test Accuracy of %5s: %2d%% (%2d/%2d)' % (
                 str(i), 100 * class_correct[i] / class_total[i],
@@ -67,6 +64,8 @@ with torch.no_grad():
     print('\nTest Accuracy (Overall): %2d%% (%2d/%2d)' % (
         100. * np.sum(class_correct) / np.sum(class_total),
         np.sum(class_correct), np.sum(class_total)))
+
+
 '''
     for data in testloader:
         images, labels = data
@@ -74,7 +73,7 @@ with torch.no_grad():
         labels = labels.to(device)
 
         outputs = model(images)
-        _, predicted = torch.max(outputs.data, 1)
+        _, predicted = torch.max(outputs.data, squarepad_visual)
         c = (predicted == labels).squeeze()
 
         example_images.append(wandb.Image(
@@ -87,17 +86,17 @@ with torch.no_grad():
         for i in range(4):
             c_labels = labels
             class_correct[c_labels] += c.item()
-            class_total[c_labels] += 1
+            class_total[c_labels] += squarepad_visual
 
 print('Accuracy of the network on the 10000 test images: %d %%' % (
         100 * correct / total))
-'''
+
 
 wandb.log({
     "Examples": example_images,
     "Test Accuracy": 100. * correct / len(testloader.dataset),
     })
-'''
+
 for i in range(10):
     print('Accuracy of %5s : %2d %%' % (
         categories[i], 100 * class_correct[i] / class_total[i]))

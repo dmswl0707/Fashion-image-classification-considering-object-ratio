@@ -1,9 +1,10 @@
 import torch
 import numpy as np
+from Args import *
 
 class EarlyStopping:
     """주어진 patience 이후로 validation loss가 개선되지 않으면 학습을 조기 중지"""
-    def __init__(self, patience=7, verbose=False, delta=0, path='checkpoint.pt'):
+    def __init__(self, patience=7, verbose=False, delta=0, path= Args["name"]+'.pt'):
         """
         Args:
             patience (int): validation loss가 개선된 후 기다리는 기간
@@ -13,7 +14,7 @@ class EarlyStopping:
             delta (float): 개선되었다고 인정되는 monitered quantity의 최소 변화
                             Default: 0
             path (str): checkpoint저장 경로
-                            Default: 'checkpoint.pt'
+                            Default: 'None.pt'
         """
         self.patience = patience
         self.verbose = verbose

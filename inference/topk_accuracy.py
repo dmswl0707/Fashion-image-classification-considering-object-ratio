@@ -1,7 +1,8 @@
-from transforms import *
+from transforms_squarepad3 import *
 #from main import *
 #from scratch_training import MModel, device, criterion
-from training import model, criterion,device
+#from training import model, criterion,device
+from train_sqaurepad import *
 import torch
 
 class AverageMeter(object):
@@ -45,7 +46,7 @@ def accuracy(output, target, topk=(1,)):
 
 def evaluate(model, criterion, data_loader, neval_batches):
     model.eval()
-    top1 = AverageMeter('Acc@1', ':6.2f')
+    top1 = AverageMeter('Acc@squarepad_visual', ':6.2f')
     top5 = AverageMeter('Acc@5', ':6.2f')
     cnt = 0
     with torch.no_grad():
@@ -60,16 +61,16 @@ def evaluate(model, criterion, data_loader, neval_batches):
             top1.update(acc1.item(), images.size(0))
             top5.update(acc5.item(), images.size(0))
             #if cnt >= neval_batches:
-            print('TEST: * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'.format(top1=top1, top5=top5))
+            print('TEST: * Acc@squarepad_visual {top1.avg:.3f} Acc@5 {top5.avg:.3f}'.format(top1=top1, top5=top5))
 
-    print('Full imagenet test set:  * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'.format(top1=top1, top5=top5))
+    print('Full imagenet test set:  * Acc@squarepad_visual {top1.avg:.3f} Acc@5 {top5.avg:.3f}'.format(top1=top1, top5=top5))
 
 
 num_eval_batches = 32
 eval_batch_size = 1
 nepoch = 100
 
-PATH = '../weights/checkpoint_adam_4trial.pt'
+PATH = '/workspace/pytorch/project_dir/Ratio_Image_Recognition/ResNet50_SquarePad_lr0.00001.pt'
 #model=Model(num_class=10)
 model = model
 
@@ -79,6 +80,6 @@ model.load_state_dict(torch.load(PATH))
 
 
 
-evaluate(model,criterion, testloader, neval_batches=num_eval_batches)
+evaluate(model,criterion, val_loader, neval_batches=num_eval_batches)
 #print('Epoch %d :Evaluation accuracy on %d images, %2.2f'%(nepoch, num_eval_batches * eval_batch_size, top1.avg))
 #print('Epoch %d :Evaluation accuracy on %d images, %2.2f'%(nepoch, num_eval_batches * eval_batch_size, top5.avg))

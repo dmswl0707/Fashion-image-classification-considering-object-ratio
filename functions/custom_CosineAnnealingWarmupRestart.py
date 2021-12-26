@@ -6,7 +6,7 @@ class CosineAnnealingWarmUpRestarts(_LRScheduler):
         if T_0 <= 0 or not isinstance(T_0, int):
             raise ValueError("Expected positive integer T_0, but got {}".format(T_0))
         if T_mult < 1 or not isinstance(T_mult, int):
-            raise ValueError("Expected integer T_mult >= 1, but got {}".format(T_mult))
+            raise ValueError("Expected integer T_mult >= squarepad_visual, but got {}".format(T_mult))
         if T_up < 0 or not isinstance(T_up, int):
             raise ValueError("Expected positive integer T_up, but got {}".format(T_up))
         self.T_0 = T_0

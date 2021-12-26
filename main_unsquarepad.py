@@ -1,4 +1,4 @@
-from train import *
+from train_unsquarepad import *
 #from k_fold import *
 
 if __name__ == "__main__":

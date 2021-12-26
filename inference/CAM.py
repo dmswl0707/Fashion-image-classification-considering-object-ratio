@@ -1,21 +1,22 @@
 import torch
 import matplotlib.pyplot as plt
 from skimage.transform import resize
-from training import model
+from train_sqaurepad import model
 from torch.autograd import Variable
 import torch.nn as nn
-from DataLoader import testloader
+from train_sqaurepad import val_loader
+from functions.squarepad import *
 from Args import *
 
 #print(model)
-conv = list(model.children())[-3]
+#conv = list(model.children())[-3]
 #print(conv)
-params = list(model.parameters())
-features = params[-3].size()
+#params = list(model.parameters())
+#features = params[-3].size()
 #print(features)
 
 
-PATH='/home/eunji/project_dir/cifar+ResNet/custom_model.pt'
+PATH='/workspace/pytorch/project_dir/Ratio_Image_Recognition/ResNet50_UnSquarePad_lr3e-6.pt'
 model.load_state_dict(torch.load(PATH))
 
 device = Args["device"]
@@ -24,7 +25,7 @@ model = model.to(device)
 class CAM():
     def __init__(self, model):
         self.gradient = []
-        self.h = list(model.children())[-3].register_backward_hook(self.save_gradient)
+        self.h = list(model.children())[-2].register_backward_hook(self.save_gradient)
 
     def save_gradient(self, *args):
         grad_input = args[1]
@@ -43,7 +44,7 @@ class CAM():
         return x
 
     def visualize(self, cam_img, img_var):
-        cam_img = resize(cam_img.cpu().data.numpy(), output_shape=(32, 32))
+        cam_img = resize(cam_img.cpu().data.numpy(), output_shape=(224, 224))
         x = img_var[0, :, :].cpu().data.numpy()
 
         plt.subplot(1, 3, 1)
@@ -70,7 +71,7 @@ class CAM():
 
 cam = CAM(model)
 
-for i, [image, label] in enumerate(testloader):
+for i, [image, label] in enumerate(val_loader):
     x = Variable(image).cuda()
     y_ = Variable(label).cuda()
 
