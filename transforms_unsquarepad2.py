@@ -1,17 +1,10 @@
 import torchvision
 from torchvision import transforms
 #from functions.squarepad import *
-
 from torch.utils.data.sampler import SubsetRandomSampler
-
 from Args2 import *
-
 import matplotlib.pyplot as plt
 import numpy as np
-
-# preprocessing (이미지 로드 확인용)
-# 데이터 증강과 데이터 로드 #cifar100
-
 
 transforms_train = transforms.Compose([
                                  #SquarePad(), #square pad 적용
@@ -45,6 +38,8 @@ transforms_test = transforms.Compose([
 trainset = torchvision.datasets.FashionMNIST(root='./data',train = True, download = True, transform = transforms_train)
 testset = torchvision.datasets.FashionMNIST(root='./data',train = False, download = True, transform = transforms_test)
 
+#trainset = torchvision.datasets.CIFAR100(root='./data',train = True, download = True, transform = transforms_train)
+#testset = torchvision.datasets.CIFAR100(root='./data',train = False, download = True, transform = transforms_test)
 
 num_train = len(trainset)
 num_test = len(testset)
@@ -63,8 +58,6 @@ print({'test' : num_test})
 
 train_sampler = SubsetRandomSampler(train_idx)
 val_sampler = SubsetRandomSampler(val_idx)
-
-#batch_size = Args["batch_size"]
 
 categories = list(trainset.class_to_idx.keys())
 #print(categories)

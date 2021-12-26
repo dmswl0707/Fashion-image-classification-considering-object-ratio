@@ -1,6 +1,6 @@
 import glob
 import piexif
-from preprocessing.imagennet_class_index import train_path, val_path
+from imgnet_preprocessing.imagennet_class_index import train_path, val_path
 
 n_files = 0
 for filename in glob.iglob(train_path, recursive=True):

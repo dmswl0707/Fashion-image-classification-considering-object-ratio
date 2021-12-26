@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from torchvision.datasets import ImageFolder
 
-# preprocessing (이미지 로드 확인용)
+# imgnet_preprocessing (이미지 로드 확인용)
 # 데이터 증강과 데이터 로드 #이미지넷
 
 

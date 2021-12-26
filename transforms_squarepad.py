@@ -2,7 +2,7 @@ import torchvision
 from torchvision import transforms
 from torchvision.datasets import ImageFolder
 from functions.squarepad import *
-from preprocessing.imagennet_class_index import value
+from imgnet_preprocessing.imagennet_class_index import value
 from Args import *
 import matplotlib.pyplot as plt
 import numpy as np

@@ -3,7 +3,7 @@ import os
 
 idx2label = []
 cls2label = {}
-with open("/workspace/pytorch/project_dir/Ratio_Image_Recognition/preprocessing/imagenet_class_index.json", "r") as read_file:
+with open("/workspace/pytorch/project_dir/Ratio_Image_Recognition/imgnet_preprocessing/imagenet_class_index.json", "r") as read_file:
     class_idx = json.load(read_file)
     idx2label = [class_idx[str(k)][1] for k in range(len(class_idx))]
     cls2label = {class_idx[str(k)][0]: class_idx[str(k)][1] for k in range(len(class_idx))}
