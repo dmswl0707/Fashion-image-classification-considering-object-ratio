@@ -13,7 +13,7 @@
 CNN 학습 시, 고정된 사이즈로 리사이즈한 후 입력이미지로 넣어주는 과정에서 기존의 객체 정보를 소실시키는 픽셀 생략 또는 보간법을 통한 객체 이미지의 변형이 일어난다.이러한 원본 이미지의 픽셀 왜곡 현상은 객체의 비율 정보가 중요한 유사 카테고리 간 분류에서 오분류의 원인으로 작용한다.
 
 ### *비율 정보가 보존된 이미지*
-<img src="https://user-images.githubusercontent.com/65028694/150391197-019456b0-d273-44a9-91fb-3c9b196e53a1.png" width="300" height="600"><img src="https://user-images.githubusercontent.com/65028694/147313306-b318e8fe-66c1-48cf-979c-405bc9bc0c6d.png" width="600" height="400">  
+<img src="https://user-images.githubusercontent.com/65028694/150391197-019456b0-d273-44a9-91fb-3c9b196e53a1.png" width="300" height="500"><img src="https://user-images.githubusercontent.com/65028694/147313306-b318e8fe-66c1-48cf-979c-405bc9bc0c6d.png" width="600" height="400">  
 이미지의 각 해상도가 가지는 종횡비의 Maximum 기준에 따라 크기를 설정한 후, 원본 이미지와 Maximum 값의 차이를 가상의 픽셀(제로 패딩 또는 테두리 외삽법)을 통해 메워 입력 이미지를 생성한다.이를 입력 이미지로 넣어 학습한다.
 
 ### *Confusion Matrix 변화*
