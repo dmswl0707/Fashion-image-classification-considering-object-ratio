@@ -8,8 +8,14 @@
 - 성능 비교를 위해, Pretrained ResNet50, DenseNet201을 사용하여, Ratio Presevation module을 적용한 데이터셋을 학습하여 수행하고 기존의 CNN 신경망 학습방식과 비교하였다. 그 결과, Ratio Preservation Module을 제안하여 전체 정확도를 약 2.5% 향상하였으며, FPR와 FNR를 감소시켜 클래스간 오분류를 감소시켰다.
 
 ## Ratio preservation method
-CNN 학습 시, 고정된 사이즈로 리사이즈한 후 입력이미지로 넣어주는 과정에서 기존의 객체 정보를 소실시키는 픽셀 생략 또는 보간법을 통한 객체 이미지의 변형이 일어남.  
+### *픽셀의 왜곡 현상*
 ![픽셀왜곡](https://user-images.githubusercontent.com/65028694/148916432-a53cbb66-fa7f-495d-9108-19e51fb62edb.png)
-이미지의 각 해상도가 가지는 종횡비의Maximum 기준에 따라 크기를 설정한 후, 원본 이미지와 Maximum 값의 차이를 가상의 픽셀(제로 패딩 또는 테두리 외삽법)을 통해 메워 입력 이미지를 생성한다.  
-<center><img src="https://user-images.githubusercontent.com/65028694/147313306-b318e8fe-66c1-48cf-979c-405bc9bc0c6d.png" width="700" height="400"></center>
+CNN 학습 시, 고정된 사이즈로 리사이즈한 후 입력이미지로 넣어주는 과정에서 기존의 객체 정보를 소실시키는 픽셀 생략 또는 보간법을 통한 객체 이미지의 변형이 일어난다.이러한 원본 이미지의 픽셀 왜곡 현상은 객체의 비율 정보가 중요한 유사 카테고리 간 분류에서 오분류의 원인으로 작용한다.
 
+### *비율 정보가 보존된 이미지*
+<center><img src="https://user-images.githubusercontent.com/65028694/147313306-b318e8fe-66c1-48cf-979c-405bc9bc0c6d.png" width="700" height="400"></center>
+이미지의 각 해상도가 가지는 종횡비의 Maximum 기준에 따라 크기를 설정한 후, 원본 이미지와 Maximum 값의 차이를 가상의 픽셀(제로 패딩 또는 테두리 외삽법)을 통해 메워 입력 이미지를 생성한다.이를 입력 이미지로 넣어 학습한다.
+
+### Confusion Matrix 변화
+![image](https://user-images.githubusercontent.com/65028694/150389142-c7f8af3f-555c-4ffe-8456-b7b35a02133d.png)
+![image](https://user-images.githubusercontent.com/65028694/150389134-9df47023-78d8-4fe0-ba32-ff8c65da4bf3.png)
