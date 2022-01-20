@@ -16,6 +16,5 @@ CNN 학습 시, 고정된 사이즈로 리사이즈한 후 입력이미지로 �
 <center><img src="https://user-images.githubusercontent.com/65028694/147313306-b318e8fe-66c1-48cf-979c-405bc9bc0c6d.png" width="700" height="400"></center>
 이미지의 각 해상도가 가지는 종횡비의 Maximum 기준에 따라 크기를 설정한 후, 원본 이미지와 Maximum 값의 차이를 가상의 픽셀(제로 패딩 또는 테두리 외삽법)을 통해 메워 입력 이미지를 생성한다.이를 입력 이미지로 넣어 학습한다.
 
-### Confusion Matrix 변화
-![image](https://user-images.githubusercontent.com/65028694/150389142-c7f8af3f-555c-4ffe-8456-b7b35a02133d.png)
-![image](https://user-images.githubusercontent.com/65028694/150389134-9df47023-78d8-4fe0-ba32-ff8c65da4bf3.png)
+### *Confusion Matrix 변화*
+<img src="https://user-images.githubusercontent.com/65028694/150389134-9df47023-78d8-4fe0-ba32-ff8c65da4bf3.png" width="400" height="300"><img src="https://user-images.githubusercontent.com/65028694/150389142-c7f8af3f-555c-4ffe-8456-b7b35a02133d.png" width="400" height="300">
